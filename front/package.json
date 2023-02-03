@@ -9,9 +9,12 @@
   "author": "By_Jin",
   "license": "ISC",
   "dependencies": {
+    "@ant-design/icons": "^5.0.1",
+    "antd": "^5.1.7",
     "cross-env": "^7.0.3",
     "next": "^12.3.4",
-    "prop-types": "^15.8.1"
+    "prop-types": "^15.8.1",
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "eslint": "^8.33.0",
