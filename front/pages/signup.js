@@ -26,7 +26,7 @@ const Signup = () => {
     [password],
   );
 
-  const onChangeTerm = useCallback((e) => {
+  const onChangeTerm = useCallback(() => {
     setTerm((prev) => !prev);
     setTermError(false);
   });
