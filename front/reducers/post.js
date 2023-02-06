@@ -9,10 +9,10 @@ export const initalState = {
       content: '첫 번째 게시글 #해시태그 #익스프레스',
       Images: [
         {
-          src: 'https://www.crowdpic.net/photo/%EA%B7%B8%EB%A6%BC-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4%EC%85%98-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-%EB%93%9C%EB%A1%9C%EC%9E%89-%EB%B0%B0%EA%B2%BD-2795973',
+          src: 'https://cdn.pixabay.com/photo/2015/10/01/17/17/car-967387__480.png',
         },
         {
-          src: 'https://www.crowdpic.net/photo/%ED%92%8D%EB%A0%A5%EB%B0%9C%EC%A0%84-%EB%88%88%EB%B0%AD-%EB%AA%A9%EC%9E%A5-%EA%B2%A8%EC%9A%B8%EB%AA%A9%EC%9E%A5-%EB%88%88-886754',
+          src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuJuDigTVs9ptEp3rImqj0EesIabngFYnjuh9lmG261_flgi2stqYm8CWOEIiD-3KHDZs&usqp=CAU',
         },
       ],
       Comments: [
