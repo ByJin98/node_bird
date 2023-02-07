@@ -14,13 +14,14 @@ function addPostAPI() {
   return axios.post('/api/post');
 }
 
-function* addPost() {
+function* addPost(action) {
   try {
     //요청의 결과를 받음
     // const result = yield call(addPostAPI) ;
     yield delay(1000);
     yield put({
       type: ADD_POST_SUCCESS,
+      data: action.data,
     });
   } catch (err) {
     // 실패 시
@@ -36,13 +37,14 @@ function addCommentAPI(data) {
   return axios.post(`/api/post/${data.postId}/comment`, data);
 }
 
-function* addComment() {
+function* addComment(action) {
   try {
     //요청의 결과를 받음
     // const result = yield call(addPostAPI) ;
     yield delay(1000);
     yield put({
       type: ADD_COMMENT_SUCCESS,
+      data: action.data,
     });
   } catch (err) {
     // 실패 시

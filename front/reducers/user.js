@@ -8,6 +8,9 @@ import {
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
   SIGN_UP_FAILURE,
+  CHANGE_NICKNAME_REQUEST,
+  CHANGE_NICKNAME_SUCCESS,
+  CHANGE_NICKNAME_FAILURE,
 } from '../actions';
 
 export const initalState = {
@@ -20,6 +23,9 @@ export const initalState = {
   signUpLoading: false, // 회원가입 시도중
   signUpDone: false,
   signUpError: null,
+  changeNicknameLoading: false, // 닉네임 변경 시도중
+  changeNicknameDone: false,
+  changeNicknameError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -30,8 +36,8 @@ const dummyUser = (data) => ({
   nickname: 'Jin',
   id: 1,
   Posts: [],
-  Followings: [],
-  Followers: [],
+  Followings: [{ nickname: '부기초초' }, { nickname: '진진모모' }],
+  Followers: [{ nickname: '부기초초' }, { nickname: '진진모모' }],
 });
 
 export const loginRequestAction = (data) => {
@@ -107,6 +113,25 @@ const reducer = (state = initalState, action) => {
         ...state,
         signUpLoading: false,
         signUpError: action.error,
+        me: null,
+      };
+    case CHANGE_NICKNAME_REQUEST:
+      return {
+        ...state,
+        changeNicknameLoading: true,
+        changeNicknameError: null,
+      };
+    case CHANGE_NICKNAME_SUCCESS:
+      return {
+        ...state,
+        changeNicknameLoading: false,
+        changeNicknameDone: true,
+      };
+    case CHANGE_NICKNAME_FAILURE:
+      return {
+        ...state,
+        changeNicknameLoading: false,
+        changeNicknameError: action.error,
         me: null,
       };
     default:
