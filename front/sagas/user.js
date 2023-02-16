@@ -62,19 +62,17 @@ function* unFollow(action) {
   }
 }
 
-function loginAPI() {
-  return axios.post('/api/login');
+function loginAPI(data) {
+  return axios.post('/user/login', data);
 }
 
 function* login(action) {
   try {
-    console.log('saga loading');
     //요청의 결과를 받음
-    // const result = yield call(loginAPI, action.data);
-    yield delay(1000);
+    const result = yield call(loginAPI, action.data);
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     // 실패 시
@@ -86,14 +84,13 @@ function* login(action) {
 }
 
 function logOutAPI() {
-  return axios.post('/api/logout');
+  return axios.post('/user/logout');
 }
 
 function* logOut() {
   try {
     //요청의 결과를 받음
-    // const result = yield call(logOutAPI);
-    yield delay(1000);
+    yield call(logOutAPI);
     yield put({
       type: LOG_OUT_SUCCESS,
     });
@@ -107,7 +104,7 @@ function* logOut() {
 }
 
 function signUpAPI(data) {
-  return axios.post('http://localhost:3065/user', data);
+  return axios.post('/user', data);
 }
 
 function* signUp(action) {

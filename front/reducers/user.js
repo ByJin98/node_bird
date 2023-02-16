@@ -47,15 +47,6 @@ export const initalState = {
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
-const dummyUser = (data) => ({
-  ...data,
-  nickname: 'Jin',
-  id: 1,
-  Posts: [],
-  Followings: [{ nickname: '부기초초' }, { nickname: '진진모모' }],
-  Followers: [{ nickname: '부기초초' }, { nickname: '진진모모' }],
-});
-
 export const loginRequestAction = (data) => {
   return {
     type: LOG_IN_REQUEST,
@@ -110,7 +101,7 @@ const reducer = (state = initalState, action) => {
       case LOG_IN_SUCCESS:
         draft.logInLoading = false;
         draft.logInDone = true;
-        draft.me = dummyUser(action.data);
+        draft.me = action.data;
         break;
       case LOG_IN_FAILURE:
         draft.logInLoading = false;

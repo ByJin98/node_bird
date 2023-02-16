@@ -14,7 +14,7 @@ const ErrorMessage = styled.div`
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { signUpLoading, signUpDone, signUpError } = useSelector(
+  const { signUpLoading, signUpDone, signUpError, me } = useSelector(
     (state) => state.user,
   );
   const [email, onChangeEmail] = useInput('');
@@ -25,12 +25,21 @@ const Signup = () => {
   const [term, setTerm] = useState('');
   const [termError, setTermError] = useState(false);
 
+  // 로그인이 성공 되었을때
+  useEffect(() => {
+    if (me && me.id) {
+      Router.replace('/');
+    }
+  }, [me && me.id]);
+
+  // 회원가입이 완료됐다면
   useEffect(() => {
     if (signUpDone) {
       Router.push('/');
     }
   }, [signUpDone]);
 
+  // 회원가입 에러라면
   useEffect(() => {
     if (signUpError) {
       alert(signUpError);
