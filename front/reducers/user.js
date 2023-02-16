@@ -136,6 +136,7 @@ const reducer = (state = initalState, action) => {
       case SIGN_UP_REQUEST:
         draft.signUpLoading = true;
         draft.signUpError = null;
+        draft.signUpDone = false;
 
         break;
       case SIGN_UP_SUCCESS:
@@ -146,12 +147,12 @@ const reducer = (state = initalState, action) => {
       case SIGN_UP_FAILURE:
         draft.signUpLoading = false;
         draft.signUpError = action.error;
-        draft.me = null;
         break;
 
       case CHANGE_NICKNAME_REQUEST:
         draft.changeNicknameLoading = true;
         draft.changeNicknameError = null;
+        draft.changeNicknameDone = false;
         break;
 
       case CHANGE_NICKNAME_SUCCESS:
