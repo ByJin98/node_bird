@@ -23,7 +23,7 @@ passportConfig();
 app.use(
   cors({
     origin: true,
-    credentials: false,
+    credentials: true,
   }),
 );
 app.use(express.json());
@@ -53,6 +53,11 @@ app.get('/posts', (req, res) => {
 
 app.use('/post', postRouter);
 app.use('/user', userRouter);
+
+// 에러처리 미들웨어
+// 에러를 특별하게 처리하고 싶을 때
+// 예) 에러페이지가 따로 있을 때?
+app.use((err, req, res, next) => {});
 
 app.listen(3065, () => {
   console.log('서버 실행중');

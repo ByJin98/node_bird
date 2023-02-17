@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
   all,
+  call,
   delay,
   fork,
   put,
@@ -49,26 +50,27 @@ function* loadPosts(action) {
 }
 
 // 실제 요청
-function addPostAPI() {
-  return axios.post('/api/post');
+function addPostAPI(data) {
+  return axios.post(
+    '/post',
+    { content: data },
+    {
+      withCredentials: true,
+    },
+  );
 }
 
 function* addPost(action) {
   try {
     //요청의 결과를 받음
-    // const result = yield call(addPostAPI) ;
-    yield delay(1000);
-    const id = shortid.generate();
+    const result = yield call(addPostAPI, action.data);
     yield put({
       type: ADD_POST_SUCCESS,
-      data: {
-        id,
-        content: action.data,
-      },
+      data: result.data,
     });
     yield put({
       type: ADD_POST_TO_ME,
-      data: id,
+      data: result.data.id,
     });
   } catch (err) {
     // 실패 시
@@ -108,17 +110,18 @@ function* removePost(action) {
 
 // 실제 요청
 function addCommentAPI(data) {
-  return axios.post(`/api/post/${data.postId}/comment`, data);
+  return axios.post(`/post/${data.postId}/comment`, data, {
+    withCredentials: true,
+  });
 }
 
 function* addComment(action) {
   try {
     //요청의 결과를 받음
-    // const result = yield call(addPostAPI) ;
-    yield delay(1000);
+    const result = yield call(addCommentAPI, action.data);
     yield put({
       type: ADD_COMMENT_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     // 실패 시

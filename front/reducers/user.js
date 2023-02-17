@@ -17,14 +17,20 @@ import {
   UNFOLLOW_REQUEST,
   UNFOLLOW_SUCCESS,
   UNFOLLOW_FAILURE,
+  LOAD_MY_INFO_REQUEST,
+  LOAD_MY_INFO_SUCCESS,
+  LOAD_MY_INFO_FAILURE,
 } from '../actions';
 import produce from 'immer';
 
 export const initalState = {
-  followLoading: false, // 로그인 시도중
+  loadUserLoading: false, // 유저 정보 가져오기 시도중
+  loadUserDone: false,
+  loadUserError: null,
+  followLoading: false, // 팔로우 시도중
   followDone: false,
   followError: null,
-  unfollowLoading: false, // 로그인 시도중
+  unfollowLoading: false, // 언팔로우 시도중
   unfollowDone: false,
   unfollowError: null,
   logInLoading: false, // 로그인 시도중
@@ -64,6 +70,20 @@ export const logoutRequestAction = (data) => {
 const reducer = (state = initalState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case LOAD_MY_INFO_REQUEST:
+        draft.loadUserLoading = true;
+        draft.loadUserError = null;
+        draft.loadUserDone = false;
+        break;
+      case LOAD_MY_INFO_SUCCESS:
+        draft.loadUserLoading = false;
+        draft.loadUserDone = true;
+        draft.me = action.data;
+        break;
+      case LOAD_MY_INFO_FAILURE:
+        draft.loadUserLoading = false;
+        draft.loadUserError = action.error;
+        break;
       case FOLLOW_REQUEST:
         draft.followLoading = true;
         draft.followError = null;

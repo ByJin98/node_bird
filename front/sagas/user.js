@@ -16,7 +16,31 @@ import {
   UNFOLLOW_FAILURE,
   FOLLOW_REQUEST,
   UNFOLLOW_REQUEST,
+  LOAD_MY_INFO_REQUEST,
+  LOAD_MY_INFO_SUCCESS,
+  LOAD_MY_INFO_FAILURE,
 } from '../actions';
+
+function loadUserAPI() {
+  return axios.get('/user');
+}
+
+function* loadUser(action) {
+  try {
+    //요청의 결과를 받음
+    const result = yield call(loadUserAPI, action.data);
+    yield put({
+      type: LOAD_MY_INFO_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    // 실패 시
+    yield put({
+      type: LOAD_MY_INFO_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
 
 function followAPI() {
   return axios.post('/api/login');
@@ -123,6 +147,9 @@ function* signUp(action) {
     });
   }
 }
+function* watchLoadUser() {
+  yield takeLatest(LOAD_MY_INFO_REQUEST, loadUser);
+}
 
 function* watchFollow() {
   yield takeLatest(FOLLOW_REQUEST, follow);
@@ -146,6 +173,7 @@ function* watchSignUp() {
 export default function* userSaga() {
   yield all([
     fork(watchFollow),
+    fork(watchLoadUser),
     fork(watchUnfollow),
     fork(watchLogIn),
     fork(watchLogOut),

@@ -9,6 +9,7 @@ import axios from 'axios';
 // takeLatest :  두 번 누르면 마지막 것만 실행
 // throttle : 초 지정 시 해당 초 동안은 딱 한번만 실행
 axios.defaults.baseURL = 'http://localhost:3065';
+axios.defaults.withCredentials = true;
 
 export default function* rootSaga() {
   yield all([fork(postSaga), fork(userSaga)]);
