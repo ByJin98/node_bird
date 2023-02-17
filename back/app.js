@@ -1,9 +1,10 @@
 const express = require('express');
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
 const cors = require('cors');
 const session = require('express-session');
-
+const morgan = require('morgan');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const db = require('./models');
@@ -20,6 +21,7 @@ db.sequelize
 
 passportConfig();
 
+app.use(morgan('dev'));
 app.use(
   cors({
     origin: true,
@@ -43,15 +45,8 @@ app.get('/', (req, res) => {
   res.send('hello express');
 });
 
-app.get('/posts', (req, res) => {
-  res.json([
-    { id: 1, content: 'hello1' },
-    { id: 2, content: 'hello2' },
-    { id: 3, content: 'hello3' },
-  ]);
-});
-
 app.use('/post', postRouter);
+app.use('/posts', postsRouter);
 app.use('/user', userRouter);
 
 // 에러처리 미들웨어

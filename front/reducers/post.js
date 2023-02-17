@@ -12,49 +12,10 @@ import {
   REMOVE_POST_REQUEST,
   REMOVE_POST_SUCCESS,
 } from '../actions';
-import shortId from 'shortid';
 import produce from 'immer';
-import { faker } from '@faker-js/faker';
 
 export const initalState = {
-  mainPosts: [
-    {
-      id: 1,
-      User: {
-        id: 1,
-        nickname: '진진',
-      },
-      content: '첫 번째 게시글 #해시태그 #익스프레스',
-      Images: [
-        {
-          id: shortId.generate(),
-          src: 'https://cdn.pixabay.com/photo/2015/10/01/17/17/car-967387__480.png',
-        },
-        {
-          id: shortId.generate(),
-          src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuJuDigTVs9ptEp3rImqj0EesIabngFYnjuh9lmG261_flgi2stqYm8CWOEIiD-3KHDZs&usqp=CAU',
-        },
-      ],
-      Comments: [
-        {
-          id: shortId.generate(),
-          User: {
-            id: shortId.generate(),
-            nickname: '꽁꽁',
-          },
-          content: '우와 신기하네요',
-        },
-        {
-          id: shortId.generate(),
-          User: {
-            id: shortId.generate(),
-            nickname: '꽁치',
-          },
-          content: '웃기다 이거 ㅋㅋㅋ',
-        },
-      ],
-    },
-  ],
+  mainPosts: [],
   imagePaths: [], // 이미지 경로들
   hasMorePosts: true,
   loadPostsLoading: false,
@@ -70,34 +31,6 @@ export const initalState = {
   addCommentDone: false,
   addCommentError: null,
 };
-
-faker.seed(1);
-
-export const generateDummpyPost = (number) =>
-  Array(number)
-    .fill()
-    .map(() => ({
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: faker.name.fullName(),
-      },
-      content: faker.lorem.paragraph(),
-      Images: [
-        {
-          src: faker.image.image(),
-        },
-      ],
-      Comments: [
-        {
-          User: {
-            id: shortId.generate(),
-            nickname: faker.name.fullName(),
-          },
-          content: faker.lorem.sentence(),
-        },
-      ],
-    }));
 
 // initalState.mainPosts.concat(
 //   Array(20)

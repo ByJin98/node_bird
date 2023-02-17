@@ -8,7 +8,6 @@ import {
   takeLatest,
   throttle,
 } from 'redux-saga/effects';
-import shortid from 'shortid';
 import {
   ADD_COMMENT_FAILURE,
   ADD_COMMENT_REQUEST,
@@ -23,22 +22,20 @@ import {
   REMOVE_POST_REQUEST,
   REMOVE_POST_SUCCESS,
 } from '../actions';
-import { generateDummpyPost } from '../reducers/post';
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
 // 실제 요청
 function loadPostsAPI() {
-  return axios.get('/api/post');
+  return axios.get('/posts');
 }
 
 function* loadPosts(action) {
   try {
     //요청의 결과를 받음
-    // const result = yield call(addPostAPI) ;
-    yield delay(1000);
+    const result = yield call(loadPostsAPI, action.data);
     yield put({
       type: LOAD_POSTS_SUCCESS,
-      data: generateDummpyPost(10),
+      data: result.data,
     });
   } catch (err) {
     // 실패 시
