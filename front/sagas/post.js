@@ -129,18 +129,17 @@ function* addPost(action) {
 }
 
 // 실제 요청
-function removePostAPI() {
-  return axios.post('/api/post');
+function removePostAPI(data) {
+  return axios.delete(`/post/${data}`);
 }
 
 function* removePost(action) {
   try {
     //요청의 결과를 받음
-    // const result = yield call(addPostAPI) ;
-    yield delay(1000);
+    const result = yield call(removePostAPI, action.data);
     yield put({
       type: REMOVE_POST_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
     yield put({
       type: REMOVE_POST_OF_ME,
