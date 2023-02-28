@@ -123,13 +123,7 @@ function* loadPosts(action) {
 
 // 실제 요청
 function addPostAPI(data) {
-  return axios.post(
-    '/post',
-    { content: data },
-    {
-      withCredentials: true,
-    },
-  );
+  return axios.post('/post', data);
 }
 
 function* addPost(action) {

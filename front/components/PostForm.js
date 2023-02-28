@@ -1,9 +1,12 @@
 import { Button, Form, Input } from 'antd';
 import React, { useCallback, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE } from '../actions';
+import {
+  UPLOAD_IMAGES_REQUEST,
+  REMOVE_IMAGE,
+  ADD_POST_REQUEST,
+} from '../actions';
 import useInput from '../hooks/useInput';
-import { addPost } from '../reducers/post';
 
 const PostForm = () => {
   const { imagePaths, addPostDone } = useSelector((state) => state.post);
@@ -18,8 +21,20 @@ const PostForm = () => {
   }, [addPostDone]);
 
   const onSumbit = useCallback(() => {
-    console.log(text);
-    dispatch(addPost(text));
+    if (!text) {
+      alert('글을 작성해주세요!');
+      return;
+    }
+
+    const formData = new FormData();
+    imagePaths.forEach((p) => {
+      formData.append('image', p);
+    });
+    formData.append('content', text);
+    return dispatch({
+      type: ADD_POST_REQUEST,
+      data: formData,
+    });
   }, [text]);
 
   const onClickImageUpload = useCallback(() => {

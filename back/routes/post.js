@@ -1,5 +1,5 @@
 const express = require('express');
-const { Post, Comment, Image, User } = require('../models');
+const { Post, Comment, Image, User, Hashtag } = require('../models');
 const { isNotLoggedIn, isLoggedIn } = require('./middlewares');
 const path = require('path');
 const multer = require('multer');
@@ -13,12 +13,52 @@ try {
   console.log('uploads폴더가 없으므로 생성합니다!');
   fs.mkdirSync('uploads');
 }
-router.post('/', isLoggedIn, async (req, res) => {
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads');
+    },
+    filename(req, file, done) {
+      // 지니.png
+      const ext = path.extname(file.originalname); // 확장자 추출(.png)
+      const basename = path.basename(file.originalname, ext); // 지니
+      done(null, basename + '_' + new Date().getTime() + ext); // 지니12342341.png
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+});
+
+router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
   try {
+    const hashtags = req.body.content.match(/#[^\s#]+/g);
     const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id,
     });
+    if (hashtags) {
+      const result = await Promise.all(
+        hashtags.map((tag) =>
+          Hashtag.findOrCreate({ name: tag.slice(1).toLowerCase() }),
+        ),
+      );
+      await post.addHashtags(result.map((v) => v[0]));
+    }
+    if (req.body.image) {
+      if (Array.isArray(req.body.image)) {
+        // 이미지를 여러개 올리면
+        // image: [~~~.png, ~~~.png]
+        const images = await Promise.all(
+          req.body.image.map((image) => Image.create({ src: image })),
+        );
+        await post.addImages(images);
+      } else {
+        // 이미지를 여러개 안올리면
+        // image: ~~~.png
+        const image = await Image.create({ src: req.body.image });
+        await post.addImage(image);
+      }
+    }
     const fullPost = await Post.findOne({
       where: { id: post.id },
       include: [
@@ -53,20 +93,7 @@ router.post('/', isLoggedIn, async (req, res) => {
 });
 
 // POST post/images
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, 'uploads');
-    },
-    filename(req, file, done) {
-      // 지니.png
-      const ext = path.extname(file.originalname); // 확장자 추출(.png)
-      const basename = path.basename(file.originalname, ext); // 지니
-      done(null, basename + new Date().getTime() + ext); // 지니12342341.png
-    },
-  }),
-  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
-});
+
 router.post(
   '/images',
   isLoggedIn,
